@@ -34,8 +34,8 @@
     ]
   },
   "logo": {
-    "light": "/logo/spellit.svg",
-    "dark": "/logo/spellit.svg"
+    "light": "/logo/spellit-lighttheme.svg",
+    "dark": "/logo/spellit-darktheme.svg"
   },
   "navbar": {
     "links": [
