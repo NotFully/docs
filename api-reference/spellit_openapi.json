@@ -1,0 +1,553 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SpellIt API",
+    "description": "API для обработки Items через создание проекта, загрузку Item Set и загрузку Items",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.spellit.ai/api/"
+    }
+  ],
+  "paths": {
+    "/project": {
+      "post": {
+        "description": "Создание проекта с метаданными для дальнейшей обработки",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Project"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Успешное создание проекта",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Используем ID созданного проекта для создания Item-set"
+                    }
+                  }
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": 123,
+                      "name": "test project",
+                      "created_at": "2025-05-27T10:06:07.642156",
+                      "updated_at": "2025-05-27T10:06:07.642156",
+                      "id_base_user": 1,
+                      "id_project_item_set_processing_metadata": 528,
+                      "id_default_item_set_processing_metadata": 509,
+                      "id_default_item_processing_metadata": 439
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/item_set": {
+      "post": {
+        "description": "Создание Item Set, связанного с ранее созданным проектом",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemSet"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Успешное создание Item Set",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Используем ID созданного item_set для загрузки в него файла и работой с этим файлом в дальнейшем"
+                    }
+                  }
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "id": 123,
+                      "name": "name_a0d142",
+                      "permitted_types": null,
+                      "date_creation": null,
+                      "date_last_update": null,
+                      "id_project": 123,
+                      "status": "added",
+                      "status_project": null,
+                      "id_base_user": 1,
+                      "id_item_set_processing_metadata": null,
+                      "processing_outputs": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/item_set/upload": {
+      "patch": {
+        "description": "Загрузка Items в указанный Item Set",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ItemUpload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Успешная загрузка Items",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object"
+                    }
+                  }
+                },
+                "examples": {
+                  "default": {
+                    "value": [
+                      [
+                        {
+                          "id_item_type": 1,
+                          "created_at": "2025-05-27T10:12:42.535350+00:00",
+                          "id_base_user": 1,
+                          "id_item_set": 272,
+                          "status": "added",
+                          "id": 274,
+                          "name": "filename_091c9f.mp3",
+                          "item_link": "filelink",
+                          "last_processing_date": null
+                        },
+                        {
+                          "id_item": 274,
+                          "id_processor": 1,
+                          "created_at": "2025-05-27T10:12:46.436176+00:00",
+                          "is_default": false,
+                          "id": 440,
+                          "processing_parameters": {
+                            "file_duration": 553.392
+                          }
+                        }
+                      ]
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transcription": {
+      "get": {
+        "description": "Получение транскрипции для указанного item_set в проекте. Требуется авторизация.",
+        "parameters": [
+          {
+            "name": "id_project",
+            "in": "query",
+            "required": true,
+            "description": "ID проекта",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "id_item_set",
+            "in": "query",
+            "required": true,
+            "description": "ID item_set",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешное получение транскрипции",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "item_set_id": {
+                      "type": "integer"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "transcription": {
+                      "type": "object",
+                      "properties": {
+                        "output": {
+                          "type": "string"
+                        },
+                        "google_doc": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "item_set_id": 123,
+                      "created_at": "2025-05-26T22:25:58.936694+00:00",
+                      "transcription": {
+                        "output": "```\n00:00:02.371 - Продавец: \"Александра, здравствуйте.\"\n00:00:04.513 - Продавец: \"Здравствуйте.\"\n00:00:05.874 - Продавец: \"Меня зовут Анастасия.\"\n00:00:06.775 - Продавец: \"Звоню вам из компании по поводу.\"\n00:00:09.130 - Продавец: \"Оставляли заявку у нас?\"\n00:00:11.909 - Клиент: \"Да-да-да, я оставляла, да.\"\n00:00:14.739 - Продавец: \"Хорошо.\"...```",
+                        "google_doc": "https://docs.google.com/document/..."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/insights": {
+      "get": {
+        "description": "Получение аналитики (insights) по item_set внутри проекта. Требуется авторизация.",
+        "parameters": [
+          {
+            "name": "id_project",
+            "in": "query",
+            "required": true,
+            "description": "ID проекта",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "id_item_set",
+            "in": "query",
+            "required": true,
+            "description": "ID item_set",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешное получение аналитики (insights)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "project_id": {
+                      "type": "integer"
+                    },
+                    "item_set_id": {
+                      "type": "integer"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "insights": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "score": {
+                            "type": "number",
+                            "description": "Балл по критерию, может быть как число, так и слово"
+                          },
+                          "reasons": {
+                            "type": "string",
+                            "description": "Объяснение, почему поставлен конкретный балл"
+                          },
+                          "quotes": {
+                            "type": "string",
+                            "description": "Цитата в транскрибации на конкретный момент из звонка, объясняющий постановку балла"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "default": {
+                    "value": {
+                      "project_id": 1,
+                      "item_set_id": 1,
+                      "created_at": "2025-01-01T10:10:10",
+                      "insights": [
+                        {
+                          "criterion_name": "Уточнение удобства разговора",
+                          "score": 1,
+                          "reasons": "Менеджер уточнил, удобно ли клиенту разговаривать, что соответствует критерию. Рекомендация: продолжать спрашивать об удобстве разговора в начале звонка.",
+                          "quotes": "00:00:04.773 - Продавец: \"Удобно сейчас пообщаться?\""
+                        },
+                        {
+                          "criterion_name": "Уточнение удобства разговора",
+                          "score": 0,
+                          "reasons": "Менеджер не уточнил, удобно ли клиенту разговаривать. Это важный момент для проявления заботы о клиенте и повышения лояльности. Рекомендация: всегда в начале разговора спрашивать, удобно ли сейчас общаться.",
+                          "quotes": ""
+                        },
+                        {
+                          "criterion_name": "Уточнение потребностей клиента",
+                          "score": "",
+                          "reasons": "Менеджер частично выявил потребности, конкретных тегов не удалось определить.",
+                          "quotes": ""
+                        },
+                        {
+                          "criterion_name": "Talk ratio Продавца",
+                          "score": "67%",
+                          "reasons": "Диалог длился примерно 2100 секунд (с 00:00:02 до 00:35:21). Продавец говорил около 1400 секунд, Клиент — около 700 секунд. У Продавца — примерно 90 реплик, у Клиента — около 60. Соотношение: 1400 / 2100 = 67%.",
+                          "quotes": ""
+                        },
+                        {
+                          "criterion_name": "Звучание, тон и корректность Продавца",
+                          "score": "Позитив",
+                          "reasons": "Тональность Продавца: Позитив — доброжелательный, поддерживающий, эмоционально включённый стиль (\"Спасибо большое\", \"Если будут вопросы — обязательно пишите\"). Тональность Клиента: Нейтрально/Позитив — спокойная, местами заинтересованная, иногда с сомнениями, но без негатива (\"Мне все откликнулось\", \"Спасибо вам большое за информацию, что позвонили очень быстро\"). Итоговая оценка: Позитив, так как Продавец был позитивен и поддерживал доброжелательный стиль вне зависимости от реакции Клиента.",
+                          "quotes": ""
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Project": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { 
+            "type": "string",
+            "description": "Название проекта. Используется для идентификации и отображения."
+          },
+          "project_item_set_processing_metadata": {
+            "type": "object",
+            "description": "Метаданные для обработки набора элементов проекта.",
+            "properties": {
+              "id_processor": { 
+                "type": "integer",
+                "description": "ID выбранного процессора обработки для item_set. По умолчанию — 3."
+              },
+              "processing_parameters": {
+                "type": "object",
+                "description": "Параметры обработки item_set, передаваемые в процессор.",
+                "properties": {
+                  "processing_criteria": {
+                    "type": "object",
+                    "description": "Критерии, по которым будет производиться обработка item_set.",
+                    "properties": {
+                      "groups": {
+                        "type": "array",
+                        "description": "Список групп критериев обработки.",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "group_name": { 
+                              "type": "string", 
+                              "description": "Название группы критериев." 
+                            },
+                            "group_description": { 
+                              "type": "string", 
+                              "description": "Описание группы критериев." 
+                            },
+                            "criteria": {
+                              "type": "array",
+                              "description": "Массив критериев внутри группы.",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "name": { 
+                                    "type": "string", 
+                                    "description": "Название критерия." 
+                                  },
+                                  "type": { 
+                                    "type": "string", 
+                                    "description": "Тип критерия ('score' или 'insight')." 
+                                  },
+                                  "description": { 
+                                    "type": "string", 
+                                    "description": "Описание критерия." 
+                                  },
+                                  "prompt": { 
+                                    "type": "string", 
+                                    "description": "Текст промпта для ИИ, используемой при обработке." 
+                                  }
+                                },
+                                "required": ["name", "type", "description", "prompt"]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default_item_set_processing_metadata": {
+            "type": "object",
+            "description": "Метаданные по умолчанию для обработки item_set.",
+            "properties": {
+              "id_processor": { 
+                "type": "integer", 
+                "description": "ID процессора по умолчанию для item_set. По умолчанию - 2." 
+              },
+              "processing_parameters": {
+                "type": "object",
+                "description": "Параметры обработки, включая название компании и CRM-данные.",
+                "properties": {
+                  "COMPANY": { 
+                    "type": "string", 
+                    "description": "Название компании, используемой при обработке." 
+                  },
+                  "extra_processing_data": {
+                    "type": "object",
+                    "description": "Дополнительные данные, передаваемые для обработки.",
+                    "properties": {
+                      "crm_data": {
+                        "type": "object",
+                        "description": "Данные из CRM-системы, которые могут быть использованы при анализе.",
+                        "properties": {
+                          "crm_data1": { 
+                            "type": "string", 
+                            "description": "Первичное значение из CRM." 
+                          },
+                          "crm_data2": { 
+                            "type": "string", 
+                            "description": "Вторичное значение из CRM." 
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default_item_processing_metadata": {
+            "type": "object",
+            "description": "Метаданные по умолчанию для единичных элементов (Item).",
+            "properties": {
+              "id_processor": { 
+                "type": "integer", 
+                "description": "ID процессора по умолчанию для каждого элемента. По умолчанию задается 1" 
+              },
+              "processing_parameters": { 
+                "type": "object", 
+                "description": "Произвольные параметры для единичной обработки Item." 
+              }
+            }
+          }
+        }
+      },
+      "ItemSet": {
+        "type": "object",
+        "description": "Структура запроса для создания набора элементов (Item Set), связанного с проектом.",
+        "required": ["name", "project_id"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Название набора элементов. Используется для идентификации внутри проекта."
+          },
+          "project_id": {
+            "type": "integer",
+            "description": "ID проекта, к которому относится этот Item Set."
+          },
+          "processing_parameters": {
+            "type": "object",
+            "description": "Параметры, передаваемые в процессор обработки набора элементов.",
+            "properties": {
+              "COMPANY": {
+                "type": "string",
+                "description": "Название компании, от имени которой производится обработка."
+              },
+              "extra_processing_data": {
+                "type": "object",
+                "description": "Дополнительные данные, необходимые для бизнес-логики обработки.",
+                "properties": {
+                  "crm_data": {
+                    "type": "object",
+                    "description": "Данные из CRM, связанные с элементами Item Set.",
+                    "properties": {
+                      "crm_data1": {
+                        "type": "string",
+                        "description": "Первичное значение из CRM (например, ID клиента)."
+                      },
+                      "crm_data2": {
+                        "type": "string",
+                        "description": "Вторичное значение из CRM (например, ID сделки)."
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ItemUpload": {
+        "type": "object",
+        "required": [
+          "item_set_id",
+          "files"
+        ],
+        "description": "Структура запроса для загрузки файлов (Item'ов) в указанный item_set.",
+        "properties": {
+          "item_set_id": {
+            "type": "integer",
+            "description": "Уникальный ID item_set, в который загружаются элементы."
+          },
+          "files": {
+            "type": "array",
+            "description": "Массив файлов или объектов, представляющих собой элементы обработки.",
+            "items": {
+              "type": "object",
+              "description": "Один элемент (Item), содержащий данные или метаданные для загрузки."
+            }
+          }
+        }
+      }
+    }
+  }
+}
