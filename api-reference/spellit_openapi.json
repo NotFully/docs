@@ -58,7 +58,7 @@
         }
       }
     },
-    "/item_set": {
+    "/item-set": {
       "post": {
         "description": "Создание Item Set, связанного с ранее созданным проектом",
         "requestBody": {
@@ -108,7 +108,7 @@
         }
       }
     },
-    "/item_set/upload": {
+    "/item-set/upload": {
       "patch": {
         "description": "Загрузка Items в указанный Item Set",
         "requestBody": {
@@ -447,7 +447,7 @@
                     "properties": {
                       "crm_data": {
                         "type": "object",
-                        "description": "Данные из CRM-системы, которые могут быть использованы при анализе.",
+                        "description": "Данные из CRM-системы, которые могут быть использованы при анализе. ВАЖНО! Заполнить их при создании проекта, дополнить при создании item-set их нельзя.",
                         "properties": {
                           "crm_data1": { 
                             "type": "string", 
@@ -508,7 +508,7 @@
                 "properties": {
                   "crm_data": {
                     "type": "object",
-                    "description": "Данные из CRM, связанные с элементами Item Set.",
+                    "description": "Данные из CRM-системы, которые могут быть использованы при анализе. ВАЖНО! Заполнить их при создании проекта, дополнить при создании item-set их нельзя.",
                     "properties": {
                       "crm_data1": {
                         "type": "string",
