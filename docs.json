@@ -22,7 +22,6 @@
           {
             "group": "Запросы",
             "pages": [
-              "api-reference/endpoint/project",
               "api-reference/endpoint/item-set",
               "api-reference/endpoint/item-upload",
               "api-reference/endpoint/transcription",
