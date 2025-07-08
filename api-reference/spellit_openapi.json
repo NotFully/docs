@@ -61,6 +61,10 @@
     "/item-set": {
       "post": {
         "description": "Создание Item Set, связанного с ранее созданным проектом",
+        "security": [
+          { "ApiKeyAuth": [] },
+          { "BearerAuth": [] }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -104,13 +108,70 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Неверные параметры запроса",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "id_project is required"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Ошибка аутентификации",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Invalid auth"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Invalid input data"
+                }
+              }
+            }
           }
-        }
+        },
+        "x-code-samples": [
+          {
+            "lang": "curl",
+            "source": "curl -X POST 'https://api.example.com/item-set' \\\n  -H 'API-Access-Key: your_api_key' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"name\":\"Набор голосовых записей\",\"project_id\":123,\"processing_parameters\":{\"COMPANY\":\"Название компании\",\"extra_processing_data\":{\"crm_data\":{\"crm_data1\":\"client_12345\",\"crm_data2\":\"policy_67890\"}}}}'"
+          },
+          {
+            "lang": "python",
+            "source": "import requests\n\nurl = 'https://api.example.com/item-set'\nheaders = {\n  'API-Access-Key': 'your_api_key',\n  'Content-Type': 'application/json'\n}\ndata = {\n  \"name\": \"Набор голосовых записей\",\n  \"project_id\": 123,\n  \"processing_parameters\": {\n    \"COMPANY\": \"Название компании\",\n    \"extra_processing_data\": {\n      \"crm_data\": {\n        \"crm_data1\": \"client_12345\",\n        \"crm_data2\": \"policy_67890\"\n      }\n    }\n  }\n}\n\nresponse = requests.post(url, headers=headers, json=data)\nprint(response.json())"
+          }
+        ]
       }
     },
-    "/item-set/upload": {
+    "/item-set/upload?item_set_id={item_set_id}": {
       "patch": {
-        "description": "Загрузка Items в указанный Item Set",
+        "summary": "Загрузить файлы в Item Set",
+        "description": "Добавляет файлы в указанный набор элементов (Item Set).",
+        "security": [
+          { "ApiKeyAuth": [] },
+          { "BearerAuth": [] }
+        ],
+        "parameters": [
+          {
+            "name": "item_set_id",
+            "in": "path",
+            "description": "Уникальный идентификатор набора элементов (Item Set)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -166,13 +227,61 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Неверные параметры запроса",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "id_project is required"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Ошибка аутентификации",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Invalid auth"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Invalid input data"
+                }
+              }
+            }
           }
-        }
+        },
+        "x-code-samples": [
+          {
+            "lang": "curl",
+            "source": "curl -X PATCH 'https://api.example.com/item-set/upload?item_set_id=123' \\\n  -H 'API-Access-Key: your-api-key' \\\n  -F 'files=@audio1.mp3'"
+          },
+          {
+            "lang": "python",
+            "source": "import requests\n\nurl = 'https://api.example.com/item-set/upload?item_set_id=123'\nheaders = {'API-Access-Key': 'your-api-key'}\nfiles = [('files', open('audio1.mp3', 'rb'))]\n\nresponse = requests.patch(url, headers=headers, files=files)\nprint(response.json())"
+          },
+          {
+            "lang": "javascript",
+            "source": "const formData = new FormData();\nformData.append('files', new Blob(['audio1.mp3']));\n\nfetch('https://api.example.com/item-set/upload?item_set_id=123', {\n  method: 'PATCH',\n  headers: {\n    'API-Access-Key': 'your-api-key'\n  },\n  body: formData\n})\n  .then(response => response.json())\n  .then(data => console.log(data));"
+          }
+        ]
       }
     },
-    "/transcription": {
+    "/transcription?id_project={id_project}&id_item_set={id_item_set}": {
       "get": {
         "description": "Получение транскрипции для указанного item_set в проекте. Требуется авторизация.",
+        "security": [
+          { "ApiKeyAuth": [] },
+          { "BearerAuth": [] }
+        ],
         "parameters": [
           {
             "name": "id_project",
@@ -235,13 +344,47 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Неверные параметры запроса",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "id_project is required"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Ошибка аутентификации",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Invalid auth"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Invalid input data"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/insights": {
+    "/insights?id_project={id_project}&id_item_set={id_item_set}": {
       "get": {
         "description": "Получение аналитики (insights) по item_set внутри проекта. Требуется авторизация.",
+        "security": [
+          { "ApiKeyAuth": [] },
+          { "BearerAuth": [] }
+        ],
         "parameters": [
           {
             "name": "id_project",
@@ -345,12 +488,56 @@
                 }
               }
             }
+          },
+          "400": {
+            "description": "Неверные параметры запроса",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "id_project is required"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Ошибка аутентификации",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Invalid auth"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Ошибка валидации",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Invalid input data"
+                }
+              }
+            }
           }
         }
       }
     }
   },
   "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "API-Access-Key",
+        "description": "API-ключ для доступа к эндпоинтам"
+      },
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT-токен для авторизации (Bearer Token)"
+      }
+    },
     "schemas": {
       "Project": {
         "type": "object",
@@ -451,11 +638,11 @@
                         "properties": {
                           "crm_data1": { 
                             "type": "string", 
-                            "description": "Первичное значение из CRM." 
+                            "description": "Значение из CRM." 
                           },
                           "crm_data2": { 
                             "type": "string", 
-                            "description": "Вторичное значение из CRM." 
+                            "description": "Значение из CRM." 
                           }
                         }
                       }
@@ -512,11 +699,11 @@
                     "properties": {
                       "crm_data1": {
                         "type": "string",
-                        "description": "Первичное значение из CRM (например, ID клиента)."
+                        "description": "Значение из CRM (например, ID клиента)."
                       },
                       "crm_data2": {
                         "type": "string",
-                        "description": "Вторичное значение из CRM (например, ID сделки)."
+                        "description": "Значение из CRM (например, ID сделки)."
                       }
                     }
                   }
@@ -529,15 +716,10 @@
       "ItemUpload": {
         "type": "object",
         "required": [
-          "item_set_id",
           "files"
         ],
         "description": "Структура запроса для загрузки файлов (Item'ов) в указанный item_set.",
         "properties": {
-          "item_set_id": {
-            "type": "integer",
-            "description": "Уникальный ID item_set, в который загружаются элементы."
-          },
           "files": {
             "type": "array",
             "description": "Массив файлов или объектов, представляющих собой элементы обработки.",
