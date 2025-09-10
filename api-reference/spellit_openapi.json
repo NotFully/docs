@@ -143,11 +143,11 @@
         "x-code-samples": [
           {
             "lang": "curl",
-            "source": "curl -X POST 'https://api.example.com/item-set' \\\n  -H 'API-Access-Key: your_api_key' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"name\":\"Набор голосовых записей\",\"project_id\":123,\"processing_parameters\":{\"COMPANY\":\"Название компании\",\"extra_processing_data\":{\"crm_data\":{\"crm_data1\":\"client_12345\",\"crm_data2\":\"policy_67890\",\"crm_data3_int\":123}}}}'"
+            "source": "curl -X POST 'https://api.spellit.ai/api/item-set' \\\n  -H 'API-Access-Key: your_api_key' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"name\":\"Набор голосовых записей\",\"project_id\":123,\"processing_parameters\":{\"COMPANY\":\"Название компании\",\"extra_processing_data\":{\"crm_data\":{\"call_date\":\"YYYY-MM-DD\",\"crm_data_2\":\"600\",\"crm_data_3\":123}}}}'"
           },
           {
             "lang": "python",
-            "source": "import requests\n\nurl = 'https://api.example.com/item-set'\nheaders = {\n  'API-Access-Key': 'your_api_key',\n  'Content-Type': 'application/json'\n}\ndata = {\n  \"name\": \"Набор голосовых записей\",\n  \"project_id\": 123,\n  \"processing_parameters\": {\n    \"COMPANY\": \"Название компании\",\n    \"extra_processing_data\": {\n      \"crm_data\": {\n        \"crm_data1\": \"client_12345\",\n        \"crm_data2\": \"policy_67890\",\n        \"crm_data3_int\": 123\n      }\n    }\n  }\n}\n\nresponse = requests.post(url, headers=headers, json=data)\nprint(response.json())"
+            "source": "import requests\n\nurl = 'https://api.spellit.ai/api/item-set'\nheaders = {\n  'API-Access-Key': 'your_api_key',\n  'Content-Type': 'application/json'\n}\ndata = {\n  \"name\": \"Набор голосовых записей\",\n  \"project_id\": 123,\n  \"processing_parameters\": {\n    \"COMPANY\": \"Название компании\",\n    \"extra_processing_data\": {\n      \"crm_data\": {\n        \"call_date\": \"YYYY-MM-DD\",\n        \"crm_data_2\": 600,\n        \"crm_data_3\": 123\n      }\n    }\n  }\n}\n\nresponse = requests.post(url, headers=headers, json=data)\nprint(response.json())"
           }
         ]
       }
@@ -262,15 +262,15 @@
         "x-code-samples": [
           {
             "lang": "curl",
-            "source": "curl -X PATCH 'https://api.example.com/item-set/upload?item_set_id=123' \\\n  -H 'API-Access-Key: your-api-key' \\\n  -F 'files=@audio1.mp3'"
+            "source": "curl -X PATCH 'https://api.spellit.ai/api/item-set/upload?item_set_id=123' \\\n  -H 'API-Access-Key: your-api-key' \\\n  -F 'files=@audio1.mp3'"
           },
           {
             "lang": "python",
-            "source": "import requests\n\nurl = 'https://api.example.com/item-set/upload?item_set_id=123'\nheaders = {'API-Access-Key': 'your-api-key'}\nfiles = [('files', open('audio1.mp3', 'rb'))]\n\nresponse = requests.patch(url, headers=headers, files=files)\nprint(response.json())"
+            "source": "import requests\n\nurl = 'https://api.spellit.ai/api/item-set/upload?item_set_id=123'\nheaders = {'API-Access-Key': 'your-api-key'}\nfiles = [('files', open('audio1.mp3', 'rb'))]\n\nresponse = requests.patch(url, headers=headers, files=files)\nprint(response.json())"
           },
           {
             "lang": "javascript",
-            "source": "const formData = new FormData();\nformData.append('files', new Blob(['audio1.mp3']));\n\nfetch('https://api.example.com/item-set/upload?item_set_id=123', {\n  method: 'PATCH',\n  headers: {\n    'API-Access-Key': 'your-api-key'\n  },\n  body: formData\n})\n  .then(response => response.json())\n  .then(data => console.log(data));"
+            "source": "const formData = new FormData();\nformData.append('files', new Blob(['audio1.mp3']));\n\nfetch('https://api.spellit.ai/api/item-set/upload?item_set_id=123', {\n  method: 'PATCH',\n  headers: {\n    'API-Access-Key': 'your-api-key'\n  },\n  body: formData\n})\n  .then(response => response.json())\n  .then(data => console.log(data));"
           }
         ]
       }
@@ -438,7 +438,7 @@
                           },
                           "quotes": {
                             "type": "string",
-                            "description": "Цитата в транскрибации на конкретный момент из звонка, объясняющий постановку балла"
+                            "description": "Цитата из звонка, объясняющая постановку балла"
                           }
                         }
                       }
@@ -634,13 +634,13 @@
                     "properties": {
                       "crm_data": {
                         "type": "object",
-                        "description": "crm_data – это данные из CRM или из других источников, на основе которых строится отчет. Изначально они задаются при создании проекта. Далее при каждом создании item-set эти поля заполняются данными по конкретному звонку и отправляются в систему. \nОбратите внимание: данные типа число и булево значение не выделяются кавычками. В кавычки берутся только остальные типы (строка, дата в формате timestamp и т.д.).",
+                        "description": "crm_data – это данные из CRM или из других источников, на основе которых строится отчет. Изначально они задаются при создании проекта. Далее при каждом создании item-set эти поля заполняются данными по конкретному звонку и отправляются в систему. \nОбратите внимание: данные типа число и булево значение не выделяются кавычками. В кавычки берутся только остальные типы (строка, в формате timestamp и т.д.).",
                         "properties": {
-                          "crm_data1": { 
+                          "call_date": { 
                             "type": "string", 
                             "description": "Значение из CRM." 
                           },
-                          "crm_data2": { 
+                          "crm_data_2": { 
                             "type": "string", 
                             "description": "Значение из CRM." 
                           }
@@ -681,35 +681,25 @@
             "type": "integer",
             "description": "ID проекта, к которому относится этот Item Set. За ID проекта обращайтесь к команде Spellit."
           },
-          "processing_parameters": {
+          "processing_parameters.COMPANY": {
+            "type": "string",
+            "description": "Название компании, от имени которой производится обработка."
+          },
+          "processing_parameters.extra_processing_data": {
             "type": "object",
-            "description": "Параметры, передаваемые в процессор обработки набора элементов.",
-            "properties": {
-              "COMPANY": {
-                "type": "string",
-                "description": "Название компании, от имени которой производится обработка."
-              },
-              "extra_processing_data": {
-                "type": "object",
-                "description": "Дополнительные данные, необходимые для бизнес-логики обработки.",
-                "properties": {
-                  "crm_data": {
-                    "type": "object",
-                    "description": "crm_data – это данные из CRM или из других источников, на основе которых строится отчет. Изначально они задаются при создании проекта. Далее при каждом создании item-set эти поля заполняются данными по конкретному звонку и отправляются в систему. \nОбратите внимание: данные типа число и булево значение не выделяются кавычками. В кавычки берутся только остальные типы (строка, дата в формате timestamp и т.д.).",
-                    "properties": {
-                      "crm_data1": {
-                        "type": "string",
-                        "description": "Значение из CRM (например, ID клиента)."
-                      },
-                      "crm_data2": {
-                        "type": "string",
-                        "description": "Значение из CRM (например, ID сделки)."
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            "description": "Дополнительные данные, необходимые для бизнес-логики обработки."
+          },
+          "processing_parameters.extra_processing_data.crm_data": {
+            "type": "object",
+            "description": "crm_data — это набор метаданных из CRM или других источников, который передается вместе с каждым звонком для построения детализированной аналитики. Эти данные позволяют фильтровать отчеты и получать различные срезы аналитики по вашим звонкам.\n\n**Как это работает**\n\n1. **Настройка проекта** — при создании проекта определяется структура полей crm_data\n2. **Отправка данных** — при каждом создании item-set поля заполняются данными по конкретному звонку\n3. **Аналитика** — на основе переданных метаданных строятся отчеты и фильтры\n\n**Стандартные поля**\nВот эти поля, как правило, используют наши клиенты:\n```json\n  \"crm_data\": {\n    \"call_date\": \"Дата звонка\",\n    \"crm_data_2\": \"Длительность (СЕК)\",\n    \"crm_data_3\": \"ID звонка\",\n    \"crm_data_4\": \"Телефон\",\n    \"crm_data_5\": \"Источник\",\n    \"crm_data_6\": \"Время звонка\",\n    \"crm_data_7\": \"Тип звонка\",\n    \"crm_data_8\": \"Номер недели\",\n    \"crm_data_9\": \"ID контакта\",\n    \"crm_data_10\": \"ФИО контакта\",\n    \"crm_data_11\": \"Тип контакта\",\n    \"crm_data_12\": \"Дата создания сделки\",\n    \"crm_data_13\": \"ID сделки\",\n    \"crm_data_14\": \"Название сделки\",\n    \"crm_data_15\": \"Воронка сделки\",\n    \"crm_data_16\": \"Бюджет сделки\",\n    \"crm_data_17\": \"Этап сделки\",\n    \"crm_data_18\": \"Ссылка на сделку\",\n    \"crm_data_19\": \"ID менеджера\",\n    \"crm_data_20\": \"ФИО менеджера\",\n    \"crm_data_21\": \"резерв_1\",\n    \"crm_data_22\": \"резерв_2\",\n    \"crm_data_23\": \"резерв_3\",\n    \"crm_data_24\": \"резерв_4\",\n    \"crm_data_25\": \"резерв_5\"\n  }\n```\n\n⚠️ **Важно:** Дата звонка всегда должна отправляться с ключом `call_date`\n\n**Кастомизация полей**\nВы не ограничены стандартным набором полей. SpellitAI поддерживает:\n\n- **Любое количество полей** — технических ограничений нет\n- **Любые названия полей** — используйте удобные для вас ключи\n- **Специфичные для бизнеса поля** — добавляйте данные, важные именно для вашей аналитики\n\n**Резервные поля**\nЕсли стандартного набора недостаточно, используйте резервные поля (crm_data_21 - crm_data_25) или обратитесь к команде SpellitAI для создания индивидуальной структуры.\n\n**Формат данных**\n\n| Тип данных | Формат | Примеры |\n|------------|--------|----------|\n| Числовые значения | Без кавычек | 1060, 1966074090 |\n| Текстовые данные | В кавычках | \"CallGear\", \"Входящий\" |\n| Даты | В кавычках | \"2025-08-19\" |\n| Время | В кавычках | \"08:26:20\" |\n| Телефоны | В кавычках | \"+79157778899\" |\n\n**Пример**\n\n✅ **Правильно:**\n```json\n  \"crm_data\": {\n    \"call_date\": \"2025-08-19\",\n    \"crm_data_2\": 1060,\n    \"crm_data_3\": 1966074090,\n    \"crm_data_4\": \"+79157778899\",\n    \"crm_data_5\": \"CallGear\",\n    \"crm_data_6\": \"08:26:20\"\n  }\n```\n\n**Начало работы**\n\n1. **Определите структуру полей**\n   Выберите и утвердите список полей, которые будете отправлять. Это критически важно для корректной работы аналитики.\n\n2. **Отправьте тестовый звонок**\n   Передайте первый тестовый звонок с частью полей, чтобы убедиться в правильности интеграции.\n\n3. **Получите поддержку**\n   По вопросам интеграции обращайтесь к команде SpellitAI — процесс интеграции простой и не займет много времени!\n\n "
+          },
+          "processing_parameters.extra_processing_data.crm_data.call_date": {
+            "type": "string",
+            "description": "Значение из CRM-поля 'Дата звонка'."
+          },
+          "processing_parameters.extra_processing_data_crm_data.crm_data_2": {
+            "type": "string",
+            "description": "Значение из CRM-поля 'Длительность (СЕК)'."
           }
         }
       },

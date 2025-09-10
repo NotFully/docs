@@ -27,6 +27,12 @@
               "api-reference/endpoint/transcription",
               "api-reference/endpoint/insights"
             ]
+          },
+          {
+            "group": "FAQ",
+            "pages": [
+              "api-reference/faq"
+            ]
           }
         ]
       }
