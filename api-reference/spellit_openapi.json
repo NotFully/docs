@@ -143,11 +143,11 @@
         "x-code-samples": [
           {
             "lang": "curl",
-            "source": "curl -X POST 'https://api.spellit.ai/api/item-set' \\\n  -H 'API-Access-Key: your_api_key' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"name\":\"Набор голосовых записей\",\"project_id\":123,\"processing_parameters\":{\"COMPANY\":\"Название компании\",\"extra_processing_data\":{\"crm_data\":{\"call_date\":\"YYYY-MM-DD\",\"crm_data_2\":\"600\",\"crm_data_3\":123}}}}'"
+            "source": "curl -X POST 'https://api.spellit.ai/api/item-set' \\\n  -H 'API-Access-Key: your_api_key' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"name\":\"Название звонка\",\"project_id\":123,\"processing_parameters\":{\"COMPANY\":\"Название компании\",\"extra_processing_data\":{\"crm_data\":{\"call_date\":\"YYYY-MM-DD\",\"crm_data_2\":\"600\",\"crm_data_3\":123}}}}'"
           },
           {
             "lang": "python",
-            "source": "import requests\n\nurl = 'https://api.spellit.ai/api/item-set'\nheaders = {\n  'API-Access-Key': 'your_api_key',\n  'Content-Type': 'application/json'\n}\ndata = {\n  \"name\": \"Набор голосовых записей\",\n  \"project_id\": 123,\n  \"processing_parameters\": {\n    \"COMPANY\": \"Название компании\",\n    \"extra_processing_data\": {\n      \"crm_data\": {\n        \"call_date\": \"YYYY-MM-DD\",\n        \"crm_data_2\": 600,\n        \"crm_data_3\": 123\n      }\n    }\n  }\n}\n\nresponse = requests.post(url, headers=headers, json=data)\nprint(response.json())"
+            "source": "import requests\n\nurl = 'https://api.spellit.ai/api/item-set'\nheaders = {\n  'API-Access-Key': 'your_api_key',\n  'Content-Type': 'application/json'\n}\ndata = {\n  \"name\": \"Название звонка\",\n  \"project_id\": 123,\n  \"processing_parameters\": {\n    \"COMPANY\": \"Название компании\",\n    \"extra_processing_data\": {\n      \"crm_data\": {\n        \"call_date\": \"YYYY-MM-DD\",\n        \"crm_data_2\": 600,\n        \"crm_data_3\": 123\n      }\n    }\n  }\n}\n\nresponse = requests.post(url, headers=headers, json=data)\nprint(response.json())"
           }
         ]
       }
