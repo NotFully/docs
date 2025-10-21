@@ -25,7 +25,10 @@
               "api-reference/endpoint/item-set",
               "api-reference/endpoint/item-upload",
               "api-reference/endpoint/transcription",
-              "api-reference/endpoint/insights"
+              "api-reference/endpoint/insights",
+              "api-reference/endpoint/project-item-sets",
+              "api-reference/endpoint/project-item-sets-by-date",
+              "api-reference/endpoint/item-set-crm-data"
             ]
           },
           {
