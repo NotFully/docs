@@ -843,6 +843,119 @@
           }
         }
       }
+    },
+    "/client/item-set/{item_set_id}/crm-data": {
+      "get": {
+        "description": "Получение CRM данных, связанных с указанным item_set",
+        "security": [
+          { "ApiKeyAuth": [] },
+          { "BearerAuth": [] }
+        ],
+        "parameters": [
+          {
+            "name": "item_set_id",
+            "in": "path",
+            "required": true,
+            "description": "ID item_set",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id_item_set": {
+                      "type": "integer",
+                      "description": "ID item_set, для которого запрашивались CRM данные"
+                    },
+                    "crm_data": {
+                      "type": "object",
+                      "nullable": true,
+                      "description": "Объект с CRM данными или null, если данные отсутствуют"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true,
+                      "description": "Дата и время создания метаданных с CRM данными или null"
+                    }
+                  }
+                },
+                "examples": {
+                  "with_crm_data": {
+                    "summary": "Ответ с CRM данными",
+                    "value": {
+                      "id_item_set": 123,
+                      "crm_data": {
+                        "customer_id": "CUST_001",
+                        "customer_name": "CUST_NAME",
+                        "contact_person": "Иван Иванов",
+                        "phone": "+7-999-123-45-67",
+                        "email": "ivan@example.com"
+                      },
+                      "created_at": "2024-01-15T10:30:00Z"
+                    }
+                  },
+                  "without_crm_data": {
+                    "summary": "Ответ без CRM данных",
+                    "value": {
+                      "id_item_set": 123,
+                      "crm_data": null,
+                      "created_at": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Отсутствует или неверный токен аутентификации",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Item_set не принадлежит текущему пользователю",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Item_set с указанным ID не найден",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Item set not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Внутренняя ошибка сервера",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
