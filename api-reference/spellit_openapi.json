@@ -521,6 +521,157 @@
           }
         }
       }
+    },
+    "/client/project/{project_id}/item-sets": {
+      "get": {
+        "description": "Получение списка всех item_set для указанного проекта",
+        "security": [
+          { "ApiKeyAuth": [] },
+          { "BearerAuth": [] }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "description": "ID проекта",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Номер страницы для пагинации",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "required": false,
+            "description": "Количество элементов на странице",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          },
+          {
+            "name": "status_filter",
+            "in": "query",
+            "required": false,
+            "description": "Фильтр по статусу item_set",
+            "schema": {
+              "type": "string",
+              "enum": ["added", "processing", "processed", "processing_failed"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный ответ",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "item_sets": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer",
+                            "description": "Уникальный идентификатор item_set"
+                          },
+                          "name": {
+                            "type": "string",
+                            "description": "Название item_set (содержит UUID для уникальности)"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Дата и время создания (ISO 8601)"
+                          },
+                          "status": {
+                            "type": "string",
+                            "enum": ["added", "processing", "processed", "processing_failed"],
+                            "description": "Статус обработки item_set"
+                          },
+                          "status_within_project": {
+                            "type": "string",
+                            "enum": ["added", "all_items_processed", "processing", "processed", "failed"],
+                            "description": "Статус item_set в рамках проекта"
+                          }
+                        }
+                      }
+                    },
+                    "total_count": {
+                      "type": "integer",
+                      "description": "Общее количество найденных item_set"
+                    }
+                  }
+                },
+                "example": {
+                  "item_sets": [
+                    {
+                      "id": 123,
+                      "name": "item_set_name_abc123",
+                      "created_at": "2024-01-15T10:30:00Z",
+                      "status": "processed",
+                      "status_within_project": "processed"
+                    }
+                  ],
+                  "total_count": 1
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Отсутствует или неверный токен аутентификации",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Проект не принадлежит текущему пользователю",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Проект с указанным ID не найден",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Project not found"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Внутренняя ошибка сервера",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {

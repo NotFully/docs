@@ -25,7 +25,8 @@
               "api-reference/endpoint/item-set",
               "api-reference/endpoint/item-upload",
               "api-reference/endpoint/transcription",
-              "api-reference/endpoint/insights"
+              "api-reference/endpoint/insights",
+              "api-reference/endpoint/project-item-sets"
             ]
           },
           {
