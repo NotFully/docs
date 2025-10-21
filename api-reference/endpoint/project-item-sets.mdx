@@ -5,8 +5,6 @@ openapi: 'GET /client/project/{project_id}/item-sets'
 
 <Callout emoji="📋">Возвращает список всех item_set для указанного проекта.</Callout>
 
-
-
 ## Параметры
 
 - `project_id` (int, path, **обязательный**) - ID проекта
@@ -53,3 +51,51 @@ curl -X GET "https://api.spellit.ai/api/client/project/123/item-sets?status_filt
   - `status` - статус обработки item_set (added, processing, processed, processing_failed)
   - `status_within_project` - статус item_set в рамках проекта (added, all_items_processed, processing, processed, failed)
 - `total_count` - общее количество найденных item_set
+
+## Статусы и их значения
+
+### Статусы item_set:
+
+- `added` - добавлен, ожидает обработки
+- `processing` - в процессе обработки
+- `processed` - успешно обработан
+- `processing_failed` - ошибка обработки
+
+### Статусы item_set в рамках проекта:
+
+- `added` - добавлен в проект
+- `all_items_processed` - все элементы обработаны
+- `processing` - в процессе обработки
+- `processed` - полностью обработан
+- `failed` - ошибка обработки
+
+## Дополнительные примеры использования
+
+### Примеры обработки ошибок:
+
+#### Ошибка аутентификации:
+
+```bash
+# Запрос без токена
+curl -X GET "https://api.spellit.ai/api/client/project/123/item-sets"
+
+# Ответ:
+# HTTP/1.1 401 Unauthorized
+{
+  "detail": "Not authenticated"
+}
+```
+
+#### Ошибка доступа к проекту:
+
+```bash
+# Запрос к проекту, к которому нет доступа
+curl -X GET "https://api.spellit.ai/api/client/project/999/item-sets" \
+  -H "API-Access-Key: your access key"
+
+# Ответ:
+# HTTP/1.1 403 Forbidden
+{
+  "detail": "Project not found or access denied"
+}
+```

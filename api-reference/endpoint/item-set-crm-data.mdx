@@ -47,3 +47,20 @@ curl -X GET "https://api.spellit.ai/api/client/item-set/123/crm-data" \
 - CRM данные извлекаются из `processing_parameters.extra_processing_data.crm_data`
 - Если CRM данные не были переданы при создании item_set, поле `crm_data` будет `null`
 - CRM данные могут быть любыми JSON объектами, структура определяется клиентом
+
+й## Дополнительные примеры использования
+
+### Примеры обработки ошибок:
+
+#### Ошибка аутентификации:
+
+```bash
+# Запрос без токена
+curl -X GET "https://api.spellit.ai/api/client/item-set/123/crm-data"
+
+# Ответ:
+# HTTP/1.1 401 Unauthorized
+{
+  "detail": "Not authenticated"
+}
+```
