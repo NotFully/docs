@@ -8,3 +8,50 @@ openapi: 'GET /client/project/{project_id}/item-sets'
 <Callout emoji="🔑">
   Необходим <code>project_id</code> из предыдущего шага.
 </Callout>
+
+## Параметры
+
+- `project_id` (int, path, **обязательный**) - ID проекта
+- `page` (int, query, **опциональный**) - Номер страницы для пагинации
+- `per_page` (int, query, **опциональный**) - Количество элементов на странице
+- `status_filter` (string, query, **опциональный**) - Фильтр по статусу item_set
+
+## Примеры запросов
+
+### Пример 1: Базовый запрос
+
+```bash
+curl -X GET "https://api.spellit.ai/api/client/project/123/item-sets" \
+  -H "API-Access-Key: your access key"
+```
+
+### Пример 2: С пагинацией
+
+```bash
+curl -X GET "https://api.spellit.ai/api/client/project/123/item-sets?page=2&per_page=10" \
+  -H "API-Access-Key: your access key"
+```
+
+### Пример 3: С фильтром по статусу
+
+```bash
+curl -X GET "https://api.spellit.ai/api/client/project/123/item-sets?status_filter=processed" \
+  -H "API-Access-Key: your access key"
+```
+
+## Возможные ошибки
+
+- `401 Unauthorized` - Отсутствует или неверный токен аутентификации
+- `403 Forbidden` - Проект не принадлежит текущему пользователю
+- `404 Not Found` - Проект с указанным ID не найден
+- `500 Internal Server Error` - Внутренняя ошибка сервера
+
+## Описание полей ответа
+
+- `item_sets` - массив объектов item_set
+  - `id` - уникальный идентификатор item_set
+  - `name` - название item_set (содержит UUID для уникальности)
+  - `created_at` - дата и время создания (ISO 8601)
+  - `status` - статус обработки item_set (added, processing, processed, processing_failed)
+  - `status_within_project` - статус item_set в рамках проекта (added, all_items_processed, processing, processed, failed)
+- `total_count` - общее количество найденных item_set
