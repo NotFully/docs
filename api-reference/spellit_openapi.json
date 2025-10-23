@@ -603,7 +603,7 @@
                           },
                           "status_within_project": {
                             "type": "string",
-                            "enum": ["added", "all_items_processed", "processing", "processed", "failed"],
+                            "enum": ["added", "all_items_processed", "processing", "processed", "processing_failed"],
                             "description": "Статус item_set в рамках проекта"
                           }
                         }
@@ -764,7 +764,7 @@
                           },
                           "status_within_project": {
                             "type": "string",
-                            "enum": ["added", "all_items_processed", "processing", "processed", "failed"],
+                            "enum": ["added", "all_items_processed", "processing", "processed", "processing_failed"],
                             "description": "Статус item_set в рамках проекта"
                           }
                         }

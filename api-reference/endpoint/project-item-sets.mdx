@@ -49,7 +49,7 @@ curl -X GET "https://api.spellit.ai/api/client/project/123/item-sets?status_filt
   - `name` - название item_set (содержит UUID для уникальности)
   - `created_at` - дата и время создания (ISO 8601)
   - `status` - статус обработки item_set (added, processing, processed, processing_failed)
-  - `status_within_project` - статус item_set в рамках проекта (added, all_items_processed, processing, processed, failed)
+  - `status_within_project` - статус item_set в рамках проекта (added, all_items_processed, processing, processed, processing_failed)
 - `total_count` - общее количество найденных item_set
 
 ## Статусы и их значения
@@ -67,7 +67,7 @@ curl -X GET "https://api.spellit.ai/api/client/project/123/item-sets?status_filt
 - `all_items_processed` - все элементы обработаны
 - `processing` - в процессе обработки
 - `processed` - полностью обработан
-- `failed` - ошибка обработки
+- `processing_failed` - ошибка обработки
 
 ## Дополнительные примеры использования
 
