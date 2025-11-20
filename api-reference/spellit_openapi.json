@@ -956,6 +956,197 @@
           }
         }
       }
+    },
+    "/output/formulas/project/{project_id}/item-set/{item_set_id}": {
+      "get": {
+        "description": "Получение всех результатов вычислений формул для конкретного item_set в рамках проекта",
+        "security": [
+          { "ApiKeyAuth": [] },
+          { "BearerAuth": [] }
+        ],
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "description": "ID проекта (для валидации принадлежности item_set)",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "item_set_id",
+            "in": "path",
+            "required": true,
+            "description": "ID item set, для которого нужны результаты",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный ответ - возвращает массив результатов всех формул для указанного item_set",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "description": "Уникальный идентификатор записи"
+                      },
+                      "id_formula": {
+                        "type": "integer",
+                        "description": "ID формулы из таблицы object.project_formula"
+                      },
+                      "id_project_item_set_output": {
+                        "type": "integer",
+                        "description": "ID project item set processing output"
+                      },
+                      "id_item_set": {
+                        "type": "integer",
+                        "description": "ID item set"
+                      },
+                      "result": {
+                        "type": "number",
+                        "nullable": true,
+                        "description": "Результат вычисления (null если была ошибка)"
+                      },
+                      "error": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "Текст ошибки (null если вычисление успешно)"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Дата и время создания записи"
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Дата и время последнего обновления"
+                      }
+                    },
+                    "required": ["id", "id_formula", "id_project_item_set_output", "id_item_set", "created_at", "updated_at"]
+                  }
+                },
+                "examples": {
+                  "default": {
+                    "summary": "Успешные результаты с ошибками",
+                    "value": [
+                      {
+                        "id": 1,
+                        "id_formula": 5,
+                        "id_project_item_set_output": 123,
+                        "id_item_set": 456,
+                        "result": 4.5,
+                        "error": null,
+                        "created_at": "2025-11-17T10:00:00Z",
+                        "updated_at": "2025-11-17T10:00:00Z"
+                      },
+                      {
+                        "id": 2,
+                        "id_formula": 6,
+                        "id_project_item_set_output": 123,
+                        "id_item_set": 456,
+                        "result": null,
+                        "error": "Division by zero",
+                        "created_at": "2025-11-17T10:00:01Z",
+                        "updated_at": "2025-11-17T10:00:01Z"
+                      },
+                      {
+                        "id": 3,
+                        "id_formula": 7,
+                        "id_project_item_set_output": 123,
+                        "id_item_set": 456,
+                        "result": 8.234567,
+                        "error": null,
+                        "created_at": "2025-11-17T10:00:02Z",
+                        "updated_at": "2025-11-17T10:00:02Z"
+                      }
+                    ]
+                  },
+                  "successful_only": {
+                    "summary": "Только успешные результаты",
+                    "value": [
+                      {
+                        "id": 1,
+                        "id_formula": 5,
+                        "id_project_item_set_output": 123,
+                        "id_item_set": 456,
+                        "result": 4.5,
+                        "error": null,
+                        "created_at": "2025-11-17T10:00:00Z",
+                        "updated_at": "2025-11-17T10:00:00Z"
+                      },
+                      {
+                        "id": 3,
+                        "id_formula": 7,
+                        "id_project_item_set_output": 123,
+                        "id_item_set": 456,
+                        "result": 8.234567,
+                        "error": null,
+                        "created_at": "2025-11-17T10:00:02Z",
+                        "updated_at": "2025-11-17T10:00:02Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Пользователь не авторизован или токен невалиден",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Not authenticated"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Item set не найден или не принадлежит указанному проекту",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Item set 456 not found in project 304"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity - Ошибка валидации параметров (например, некорректный тип данных)",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": [
+                    {
+                      "loc": ["path", "project_id"],
+                      "msg": "value is not a valid integer",
+                      "type": "type_error.integer"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error - Внутренняя ошибка сервера",
+            "content": {
+              "application/json": {
+                "example": {
+                  "detail": "Internal server error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
