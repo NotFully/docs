@@ -1029,9 +1029,28 @@
                         "type": "string",
                         "format": "date-time",
                         "description": "Дата и время последнего обновления"
+                      },
+                      "formula": {
+                        "type": "object",
+                        "description": "Объект с информацией о формуле",
+                        "properties": {
+                          "name": {
+                            "type": "string",
+                            "description": "Название формулы"
+                          },
+                          "text": {
+                            "type": "string",
+                            "description": "Текст формулы"
+                          },
+                          "is_default": {
+                            "type": "boolean",
+                            "description": "Флаг, указывающий является ли формула формулой по умолчанию"
+                          }
+                        },
+                        "required": ["name", "text", "is_default"]
                       }
                     },
-                    "required": ["id", "id_formula", "id_project_item_set_output", "id_item_set", "created_at", "updated_at"]
+                    "required": ["id", "id_formula", "id_project_item_set_output", "id_item_set", "created_at", "updated_at", "formula"]
                   }
                 },
                 "examples": {
@@ -1046,7 +1065,12 @@
                         "result": 4.5,
                         "error": null,
                         "created_at": "2025-11-17T10:00:00Z",
-                        "updated_at": "2025-11-17T10:00:00Z"
+                        "updated_at": "2025-11-17T10:00:00Z",
+                        "formula": {
+                          "name": "total_score",
+                          "text": "AVG(score_i WHERE score_i != '')",
+                          "is_default": true
+                        }
                       },
                       {
                         "id": 2,
@@ -1056,7 +1080,12 @@
                         "result": null,
                         "error": "Division by zero",
                         "created_at": "2025-11-17T10:00:01Z",
-                        "updated_at": "2025-11-17T10:00:01Z"
+                        "updated_at": "2025-11-17T10:00:01Z",
+                        "formula": {
+                          "name": "average_rating",
+                          "text": "SUM(rating) / COUNT(rating)",
+                          "is_default": false
+                        }
                       },
                       {
                         "id": 3,
@@ -1066,7 +1095,12 @@
                         "result": 8.234567,
                         "error": null,
                         "created_at": "2025-11-17T10:00:02Z",
-                        "updated_at": "2025-11-17T10:00:02Z"
+                        "updated_at": "2025-11-17T10:00:02Z",
+                        "formula": {
+                          "name": "max_value",
+                          "text": "MAX(value_i)",
+                          "is_default": false
+                        }
                       }
                     ]
                   },
@@ -1081,7 +1115,12 @@
                         "result": 4.5,
                         "error": null,
                         "created_at": "2025-11-17T10:00:00Z",
-                        "updated_at": "2025-11-17T10:00:00Z"
+                        "updated_at": "2025-11-17T10:00:00Z",
+                        "formula": {
+                          "name": "total_score",
+                          "text": "AVG(score_i WHERE score_i != '')",
+                          "is_default": true
+                        }
                       },
                       {
                         "id": 3,
@@ -1091,7 +1130,12 @@
                         "result": 8.234567,
                         "error": null,
                         "created_at": "2025-11-17T10:00:02Z",
-                        "updated_at": "2025-11-17T10:00:02Z"
+                        "updated_at": "2025-11-17T10:00:02Z",
+                        "formula": {
+                          "name": "max_value",
+                          "text": "MAX(value_i)",
+                          "is_default": false
+                        }
                       }
                     ]
                   }

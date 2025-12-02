@@ -30,6 +30,32 @@ API-Access-Key: {token}
 - `error` (string, nullable) - Текст ошибки (null если вычисление успешно)
 - `created_at` (datetime, ISO 8601) - Дата и время создания записи
 - `updated_at` (datetime, ISO 8601) - Дата и время последнего обновления
+- `formula` (object) - Объект с информацией о формуле:
+  - `name` (string) - Название формулы
+  - `text` (string) - Текст формулы
+  - `is_default` (boolean) - Флаг, указывающий является ли формула формулой по умолчанию
+
+## Пример ответа
+
+```json
+[
+  {
+    "id": 1,
+    "id_formula": 123,
+    "id_project_item_set_output": 456,
+    "id_item_set": 448,
+    "result": 85.5,
+    "error": null,
+    "created_at": "2024-01-01T00:00:00",
+    "updated_at": "2024-01-01T00:00:00",
+    "formula": {
+      "name": "total_score",
+      "text": "AVG(score_i WHERE score_i != '')",
+      "is_default": true
+    }
+  }
+]
+```
 
 ### Примечания
 
